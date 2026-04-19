@@ -1,0 +1,17 @@
+workflows:
+  android-debug:
+    name: Android Debug
+    instance_type: linux_x2
+    max_build_duration: 30
+    environment:
+      flutter: stable
+    scripts:
+      - name: Write .env from environment variables
+        script: |
+          echo "OWM_API_KEY=$OWM_API_KEY" > "$CM_BUILD_DIR/.env"
+      - name: Get Flutter packages
+        script: flutter pub get
+      - name: Build debug AAB
+        script: flutter build appbundle --debug
+    artifacts:
+      - build/**/outputs/**/*.aab
