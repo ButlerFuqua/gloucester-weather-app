@@ -26,28 +26,10 @@ class WeatherService {
   }
 
   Future<String> getCurrentCity() async {
-    // Get permission to access location
-    LocationPermission permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        throw Exception('Location permissions are denied');
-      }
-    }
-
-    // fetch the current location, with fallbacks for flaky emulators
-    Position? position;
-    try {
-      position = await Geolocator.getCurrentPosition(
-        locationSettings: const LocationSettings(accuracy: LocationAccuracy.high),
-      ).timeout(const Duration(seconds: 5));
-    } catch (_) {
-      position = await Geolocator.getLastKnownPosition();
-    }
-    position ??= Position(
-      // Gloucester, MA fallback
-      latitude: 42.6159,
-      longitude: -70.6620,
+    // Intentionally hard-coded to Gloucester, VA
+    Position position = Position(
+      latitude: 37.4098,
+      longitude: -76.5247,
       timestamp: DateTime.now(),
       accuracy: 0,
       altitude: 0,
