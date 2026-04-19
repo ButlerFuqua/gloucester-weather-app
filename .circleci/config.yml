@@ -1,0 +1,50 @@
+version: 2.1
+
+jobs:
+  build-android-debug:
+    docker:
+      - image: ghcr.io/cirruslabs/flutter:stable
+    resource_class: large
+    steps:
+      - checkout
+
+      - run:
+          name: Write .env from CircleCI environment variables
+          command: |
+            echo "OWM_API_KEY=$OWM_API_KEY" > .env
+
+      - restore_cache:
+          keys:
+            - pub-cache-v1-{{ checksum "pubspec.lock" }}
+            - pub-cache-v1-
+
+      - run:
+          name: Install Flutter dependencies
+          command: flutter pub get
+
+      - save_cache:
+          key: pub-cache-v1-{{ checksum "pubspec.lock" }}
+          paths:
+            - .dart_tool
+            - ~/.pub-cache
+
+      - run:
+          name: Analyze
+          command: flutter analyze
+
+      - run:
+          name: Test
+          command: flutter test
+
+      - run:
+          name: Build debug APK
+          command: flutter build apk --debug
+
+      - store_artifacts:
+          path: build/app/outputs/flutter-apk/app-debug.apk
+          destination: app-debug.apk
+
+workflows:
+  build:
+    jobs:
+      - build-android-debug
