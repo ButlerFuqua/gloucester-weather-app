@@ -1,5 +1,9 @@
 # Secrets
 .env
+android/key.properties
+android/app/upload-keystore.jks
+android/upload-keystore.jks
+*.jks
 
 # Miscellaneous
 *.class
