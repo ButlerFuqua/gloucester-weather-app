@@ -83,7 +83,9 @@ class _WeatherPageState extends State<WeatherPage> {
               style: TextStyle(fontSize: 24, color: Colors.white),
             ),
             Text(
-              '${_weather?.temperature.round().toString()}°F',
+              _weather?.temperature != null
+                  ? '${_weather?.temperature.round().toString()}°F'
+                  : '',
               style: TextStyle(fontSize: 20, color: Colors.white),
             ),
             Lottie.asset(
